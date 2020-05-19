@@ -1,0 +1,23 @@
+{
+  "name": "fiscal-de-pr",
+  "version": "1.0.0",
+  "description": "fiscal-de-pr",
+  "main": "scripts.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/msproesser/fiscal-de-pr.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/msproesser/fiscal-de-pr/issues"
+  },
+  "homepage": "https://github.com/msproesser/fiscal-de-pr#readme",
+  "dependencies": {
+    "axios": "^0.19.2"
+  }
+}
