@@ -1,12 +1,12 @@
+const fiscal = require('./fiscal-de-pr')
+const configList = require('./config')
+const { mergeDeep } = require('./tools/polyfill')
 const commonConfig = require('./commonConfig')
 
 const errorNotify = commonConfig.errorNotify
-
 console.log('commonCfg',JSON.parse(commonConfig.defaultConfig))
 const defConfigs = () => (JSON.parse(commonConfig.defaultConfig))
-const { mergeDeep } = require('./tools/polyfill')
-const configList = require('./config')
-const fiscal = require('./fiscal-de-pr')
+
 configList
 .map(config => mergeDeep(defConfigs(), config))
 .map(config => {

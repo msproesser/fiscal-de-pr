@@ -44,12 +44,13 @@ function errorNotify({botUrl, headerMessage}) {
   }
 }
 
-function singleSlackMessage({botUrl, botName, botIcon, channel, headerMessage, notifyEmpty = true}) {
+function singleSlackMessage({botUrl, botName, botIcon, channel, headerMessage = '@here', notifyEmpty = true}) {
   const bot = createBot(botUrl, botName, botIcon, channel)
 
   function convertToSection({url, repository, reviews, title}) {
     const reviewMarks = reviews.map(r => r>1 ? ':heavy_check_mark:' : ':x:').join('  ')
-    return textSection(`<${url}| [*${repository}*] *${title.toUpperCase()}*> - [ ${reviewMarks} ]`)
+    const revSession = reviews.length > 0 ? `- [ ${reviewMarks} ]` : ''
+    return textSection(`<${url}| [*${repository}*] *${title.toUpperCase()}*> ${revSession}`)
 }
   function groupByAuthor(prLinks) {
     return prLinks.reduce((sum, pr) => {

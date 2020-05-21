@@ -1,5 +1,6 @@
 const prSources = {
-  'vsts': require('./tools/az-tools').vstsPrSource
+  'vsts': require('./tools/az-tools').vstsPrSource,
+  'bitbucket': require('./tools/bitbucket-tools').bitbucketPrSource
 }
 
 const notificationChannels = {
