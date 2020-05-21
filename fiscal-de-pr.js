@@ -4,7 +4,8 @@ const prSources = {
 }
 
 const notificationChannels = {
-  'slack': require('./tools/slack-tools').singleSlackMessage
+  'slack': require('./tools/slack-tools').singleSlackMessage,
+  'google-chat': require('./tools/google-chat-tools').googleChatMessage
 }
 
 function fiscalDePr({team, queryFrom, notifyOn}) {

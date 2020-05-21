@@ -1,6 +1,8 @@
 const axios = require('axios')
 const {flatten} = require('./polyfill')
+const { groupByAuthor } = require('./message-helpers')
 const SLACK_BLOCKS_LIMIT = 50
+
 function authorSection(displayName) {
   return {
       "type": "context",
@@ -51,12 +53,6 @@ function singleSlackMessage({botUrl, botName, botIcon, channel, headerMessage = 
     const reviewMarks = reviews.map(r => r>1 ? ':heavy_check_mark:' : ':x:').join('  ')
     const revSession = reviews.length > 0 ? `- [ ${reviewMarks} ]` : ''
     return textSection(`<${url}| [*${repository}*] *${title.toUpperCase()}*> ${revSession}`)
-}
-  function groupByAuthor(prLinks) {
-    return prLinks.reduce((sum, pr) => {
-        sum[pr.displayName] = flatten([sum[pr.displayName] || [], pr])
-        return sum
-    }, {})
   }
 
   function sendMessage(prMessageList) {
