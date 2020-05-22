@@ -2,9 +2,10 @@ const prSources = {
   'vsts': require('./tools/az-tools').vstsPrSource,
   'bitbucket': require('./tools/bitbucket-tools').bitbucketPrSource
 }
-
+const slack = require('./tools/slack-tools')
 const notificationChannels = {
-  'slack': require('./tools/slack-tools').singleSlackMessage,
+  'slack': slack.singleSlackMessage,
+  'slack-minimal': slack.minimalSlackMessage,
   'google-chat': require('./tools/google-chat-tools').googleChatMessage
 }
 

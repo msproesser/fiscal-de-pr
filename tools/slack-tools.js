@@ -46,6 +46,31 @@ function errorNotify({botUrl, headerMessage}) {
   }
 }
 
+function minimalSlackMessage({botUrl, botName, botIcon, channel, headerMessage = '@here', notifyEmpty = true}) {
+  const bot = createBot(botUrl, botName, botIcon, channel)
+
+  function convertToSection({url, repository, reviews, title}) {
+    const revCount = reviews.filter(r => r>1).length
+    const revSession = reviews.length > 0 ? `- [ Approves ${revCount} ]` : ''
+    return textSection(`<${url}| [*${repository}*] *${title.toUpperCase()}*> ${revSession}`)
+  }
+
+  function sendMessage(prMessageList) {
+    console.log("PR list = "+prMessageList.length + " -notifyEmpty="+notifyEmpty);
+    if (prMessageList.length || notifyEmpty) {
+      const header = [textSection(prMessageList.length ? headerMessage :'Sem PRs Parabéns galera')]
+          return bot(header.push(textSection(prMessageList)))
+    }  
+  }
+
+  return function(prList) {
+    const listOfAuthorPrs = Object.entries(groupByAuthor(prList))
+    .map(([author, prs]) => flatten([`*Author*: ${author}`, prs.map(convertToSection)]));
+    const finalMessage = flatten(listOfAuthorPrs).join('\n')
+    return sendMessage(finalMessage)
+  }
+}
+
 function singleSlackMessage({botUrl, botName, botIcon, channel, headerMessage = '@here', notifyEmpty = true}) {
   const bot = createBot(botUrl, botName, botIcon, channel)
 
@@ -71,5 +96,5 @@ function singleSlackMessage({botUrl, botName, botIcon, channel, headerMessage = 
   }
 }
 module.exports = {
-  singleSlackMessage, errorNotify
+  singleSlackMessage, errorNotify, minimalSlackMessage
 }
