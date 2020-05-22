@@ -52,14 +52,15 @@ function minimalSlackMessage({botUrl, botName, botIcon, channel, headerMessage =
   function convertToSection({url, repository, reviews, title}) {
     const revCount = reviews.filter(r => r>1).length
     const revSession = reviews.length > 0 ? `- [ Approves ${revCount} ]` : ''
-    return textSection(`<${url}| [*${repository}*] *${title.toUpperCase()}*> ${revSession}`)
+    return `<${url}| [*${repository}*] *${title.toUpperCase()}*> ${revSession}`
   }
 
   function sendMessage(prMessageList) {
     console.log("PR list = "+prMessageList.length + " -notifyEmpty="+notifyEmpty);
     if (prMessageList.length || notifyEmpty) {
       const header = [textSection(prMessageList.length ? headerMessage :'Sem PRs Parabéns galera')]
-          return bot(header.push(textSection(prMessageList)))
+      header.push(textSection(prMessageList))  
+      return bot(header)
     }  
   }
 
