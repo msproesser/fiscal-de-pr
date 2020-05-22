@@ -2,18 +2,18 @@
 
 To run the **fiscal-de-pr** you have to login into azure and share your azure folder using `-v ~/.azure:/root/.azure`.
 Then you have to set your script configuration, for this step you have to create a file like this example:
-```
+```js
 module.exports = [ 
     {
         team: 'my team name',
         queryOn: {
-            target: 'the enum query target', 
+            target: '[vsts|bitbucket]', 
             config: {
 
             }
         },
         notifyOn: {
-            target: 'the enum point to notification',
+            target: '[slack|google-chat]',
             config: {
 
             }
@@ -23,7 +23,7 @@ module.exports = [
 ```
 
 An execution example: 
-`docker run --rm -v ~/.azure:/root/.azure -v $(pwd)/config.js:/app/config.js matsproesser/fiscal-de-pr`
+`docker run --rm -e USER=$azure_user -e PASS=$azure_pass -v $(pwd)/config.js:/app/config.js matsproesser/fiscal-de-pr`
 
 ## Understanding the fields: 
 The default configuration object contains three fields:
@@ -36,11 +36,13 @@ The default configuration object contains three fields:
     - ***config***: Custom configuration based on selected target
 
 ## Query processors
-### [ vsts ]
+### [ **vsts** ]
 This query processor uses Azure client to query for open Pull Requests.
 
-Required configurations:
-```
+*OBS*: To use this target the container must receive environment variables `USER` and `PASS` 
+
+Configurations:
+```js
 {
     target: 'vsts',
     config: {
@@ -54,14 +56,31 @@ Required configurations:
 }
 ```
 
+### [ **bitbucket** ]
+This query processor uses bitbucket API v2 to query Pull Requests by user, filtering by OPEN state.
+
+Configurations:
+```js
+{
+    target: 'bitbucket',
+    config: {
+        authToken: "Basic base64(username:apiToken)", // requires a token api token with pull request read access only.
+        members: [
+            "matsproesser" // list of user ids to be watched 
+        ]
+    }
+}
+```
+
+
 ## Notifiers
-### [ slack ]
+### [ **slack** ]
 This notifier uses slack webhook to notify about open pull requests found
 
-Required cofigurations:
-```
+Cofigurations:
+```js
 {
-    target: 'slack'
+    target: 'slack',
     config: {
         botUrl: 'http://slack', //The webhook url to post messages
         botName: 'fiscal de pr', // OPTIONAL The name of bot, overrides the original name
@@ -69,6 +88,20 @@ Required cofigurations:
         channel: '#team-channel', // OPTIONAL The slack channel to replace the originally configured
         headerMessage: '@here', // A custom header message to send before pull request list
         notifyEmpty = true, // Toogle to ignore notification if there is no open pull request
+    }
+}
+```
+
+### [ **google-chat** ]
+This notifier uses google-chat webhook to notify channels about open pull requests
+
+Configurations:
+```js
+{
+    target: 'google-chat',
+    config: {
+        headerMessage: '<users/all>', // A custom header message to send before pull request list
+        botUrl: 'https://chat.google.com/....' // The webhook url to post messages
     }
 }
 ```
