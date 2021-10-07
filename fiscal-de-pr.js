@@ -1,5 +1,7 @@
+const vsts = require('./tools/az-tools')
 const prSources = {
-  'vsts': require('./tools/az-tools').vstsPrSource,
+  'vsts': vsts.vstsPrSource,
+  'vsts-repo': vsts.vstsPrByRepository,
   'bitbucket': require('./tools/bitbucket-tools').bitbucketPrSource
 }
 const slack = require('./tools/slack-tools')

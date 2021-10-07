@@ -3,7 +3,7 @@ WORKDIR /build
 COPY package.json /build/
 RUN npm install
 
-FROM microsoft/azure-cli:latest as final
+FROM mcr.microsoft.com/azure-cli:latest as final
 RUN apk add nodejs
 RUN az extension add -n azure-devops
 RUN rm -rf /root/.azure-devops/python-sdk/cache
