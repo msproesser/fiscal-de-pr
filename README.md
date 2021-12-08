@@ -37,9 +37,9 @@ The default configuration object contains three fields:
 
 ## Query processors
 ### [ **vsts** ]
-This query processor uses Azure client to query for open Pull Requests.
+This query processor uses Azure client to query for open Pull Requests based on member list.
 
-*OBS*: To use this target the container must receive environment variables `USER` and `PASS` 
+*OBS*: To use this target the container must receive environment variable `AZURE_DEVOPS_EXT_PAT` containing a valid PAT for organization
 
 Configurations:
 ```js
@@ -52,6 +52,23 @@ Configurations:
         members: [
             "user@email.com" // list of users with pull requests to be watched
         ]
+    }
+}
+```
+
+### [ **vsts-repo** ]
+This query processor uses Azure client to query open Pull Requests based on repository name
+
+*OBS*: To use this target the container must receive environment variable `AZURE_DEVOPS_EXT_PAT` containing a valid PAT for organization
+
+```js
+{
+    target: 'vsts-repo',
+    config: {
+        azHost: 'http://azure', // the host of your azure DevOps. 
+        azProject: 'MY_PROJECT', // the identifier of project inside azure DevOps where target repositories are.
+        listDraft: true, // toogle to list or ignore pull requests in draft
+        repository: "target repository" // tha name of repository to be watched
     }
 }
 ```
