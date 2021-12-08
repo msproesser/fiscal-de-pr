@@ -18,7 +18,7 @@ function bitbucketPrSource({host = 'https://bitbucket.org', authToken, members =
     }
   }
   return function() {
-    return Promise.all(members.map(queryPrs))
+    return Promise.all(unique(members).map(queryPrs))
     .then(flatten)
     .then(prs => prs.map(normalizeFields))
   }

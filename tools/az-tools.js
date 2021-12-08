@@ -1,5 +1,5 @@
 const { exec } = require('child_process');
-const {joinLists} = require('./polyfill')
+const {joinLists, unique} = require('./polyfill')
 
 function queryPrFactory(azHost, azProject) {
   const command = `az repos pr list --org ${azHost} -p ${azProject} --status active --creator`
@@ -44,7 +44,7 @@ function vstsPrSource({azHost, azProject, listDraft, members}) {
   const BASE_URL = `${azHost}${azProject}/_git`
 
   return function() {
-    return Promise.all(members.map(queryPRs))
+    return Promise.all(unique(members).map(queryPRs))
     .then(filterResults(listDraft))
     .then(normalize(azHost, azProject))
   }

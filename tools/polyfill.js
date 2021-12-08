@@ -30,6 +30,10 @@ function mergeDeep(target, source) {
 
 function joinLists(sum, item) { return sum.concat(item) }
 
+function unique(list) {
+  return [...new Set(list)]
+}
+
 module.exports = {
-  flatten, joinLists, mergeDeep
+  flatten, joinLists, mergeDeep, unique
 }
