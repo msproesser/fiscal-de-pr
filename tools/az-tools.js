@@ -7,7 +7,7 @@ function queryPrFactory(azHost, azProject) {
     exec(`${command} "${member}"` ,
     (error, stdout, stderr) => {
         if (error !== null) {
-            console.log(`exec error: ${error} + ${stderr}`);
+            console.log(`exec error [member: ${member}]: ${error} + ${stderr}`);
             reject(error)
         } else {
             resolve(JSON.parse(stdout))
@@ -41,7 +41,6 @@ function normalize(azHost, azProject) {
 
 function vstsPrSource({azHost, azProject, listDraft, members}) {
   const queryPRs = queryPrFactory(azHost, azProject)
-  const BASE_URL = `${azHost}${azProject}/_git`
 
   return function() {
     return Promise.all(unique(members).map(queryPRs))
